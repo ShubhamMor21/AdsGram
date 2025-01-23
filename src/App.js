@@ -27,12 +27,28 @@ function App() {
     }
   }, []);
 
-  const handleOpenTonkeeper = () => {
+  // Move openTonkeeperApp function definition above its first usage
+  const openTonkeeperApp = () => {
     const tonkeeperURI = "tonkeeper://"; // Tonkeeper app URI scheme
     const extensionURL =
       "https://chromewebstore.google.com/detail/tonkeeper-%E2%80%94-wallet-for-to/omaabbefbmiijedngplfjmnooppbclkk";
     const appStoreURL = "https://tonkeeper.com"; // Tonkeeper website for download
 
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none"; // Hide the iframe
+    iframe.src = tonkeeperURI; // Attempt to open the Tonkeeper app
+    document.body.appendChild(iframe);
+
+    setTimeout(() => {
+      window.location.href = extensionURL;
+    }, 2000);
+
+    setTimeout(() => {
+      window.location.href = appStoreURL;
+    }, 4000);
+  };
+
+  const handleOpenTonkeeper = () => {
     if (adsgramLoaded) {
       // Initialize the Adsgram controller
       const AdController = window.Adsgram.init({ blockId: "int-7362" });
@@ -57,21 +73,6 @@ function App() {
       console.error("Adsgram script not loaded correctly.");
       openTonkeeperApp();
     }
-
-    const openTonkeeperApp = () => {
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none"; // Hide the iframe
-      iframe.src = tonkeeperURI; // Attempt to open the Tonkeeper app
-      document.body.appendChild(iframe);
-
-      setTimeout(() => {
-        window.location.href = extensionURL;
-      }, 2000);
-
-      setTimeout(() => {
-        window.location.href = appStoreURL;
-      }, 4000);
-    };
   };
 
   return (
